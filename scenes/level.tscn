@@ -1,0 +1,105 @@
+[gd_scene load_steps=13 format=3 uid="uid://c3c73500xepqf"]
+
+[ext_resource type="PackedScene" uid="uid://byqluqmcuwuow" path="res://player/player.tscn" id="1_2q6dc"]
+[ext_resource type="Script" uid="uid://c021eusb07gtx" path="res://player/player_camera.gd" id="2_w7c3h"]
+[ext_resource type="Script" uid="uid://nbh6bd4l4vsd" path="res://scenes/TestScript.gd" id="3_w8frs"]
+[ext_resource type="Material" uid="uid://dumpc2i4cpbl1" path="res://materials/outline.tres" id="4_mx8sn"]
+[ext_resource type="Script" uid="uid://chapspfavix4l" path="res://scenes/static_body_3d_2.gd" id="5_ppgk2"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w7c3h"]
+sky_top_color = Color(0.009451267, 0.16003731, 0.38358018, 1)
+sky_horizon_color = Color(0.22134392, 0.24898268, 0.29377595, 1)
+ground_bottom_color = Color(0.117970385, 0.07793934, 0.033569526, 1)
+ground_horizon_color = Color(0.22134392, 0.24898268, 0.29377595, 1)
+
+[sub_resource type="Sky" id="Sky_w8frs"]
+sky_material = SubResource("ProceduralSkyMaterial_w7c3h")
+
+[sub_resource type="Environment" id="Environment_mx8sn"]
+background_mode = 2
+sky = SubResource("Sky_w8frs")
+tonemap_mode = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_ppgk2"]
+size = Vector3(40, 1, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2r41h"]
+size = Vector3(40, 1, 40)
+
+[sub_resource type="BoxMesh" id="BoxMesh_w8frs"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ppgk2"]
+
+[node name="Level" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_mx8sn")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+metadata/_edit_lock_ = true
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Floor"]
+mesh = SubResource("BoxMesh_ppgk2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_2r41h")
+
+[node name="Player" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("1_2q6dc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0423336, 0.25, -18.693365)
+camera = NodePath("../Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 8.377042, 0)
+script = ExtResource("2_w7c3h")
+player = NodePath("../Player")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." node_paths=PackedStringArray("mesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8063595, 0)
+script = ExtResource("3_w8frs")
+mesh = NodePath("MeshInstance3D")
+outline_material = ExtResource("4_mx8sn")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_w8frs")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_ppgk2")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="." node_paths=PackedStringArray("mesh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9169164, 0.8063595, 0)
+script = ExtResource("5_ppgk2")
+mesh = NodePath("MeshInstance3D")
+outline_material = ExtResource("4_mx8sn")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("BoxMesh_w8frs")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_ppgk2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[connection signal="interacted" from="StaticBody3D" to="StaticBody3D" method="_on_interacted"]
+[connection signal="mouse_entered" from="StaticBody3D" to="StaticBody3D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="StaticBody3D" to="StaticBody3D" method="_on_mouse_exited"]
+[connection signal="interacted" from="StaticBody3D2" to="StaticBody3D2" method="_on_interacted"]
+[connection signal="mouse_entered" from="StaticBody3D2" to="StaticBody3D2" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="StaticBody3D2" to="StaticBody3D2" method="_on_mouse_exited"]

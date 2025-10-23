@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://byqluqmcuwuow"]
+
+[ext_resource type="Script" uid="uid://cnf6jdbibp6vk" path="res://player/player.gd" id="1_oul6g"]
+[ext_resource type="Texture2D" uid="uid://40v8fy2crmd0" path="res://graphics/crosshair.png" id="3_g1dw6"]
+[ext_resource type="Script" uid="uid://ytkwi0r28dcw" path="res://player/crosshair.gd" id="4_yw30f"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_sh265"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4flbx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g1dw6"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_oul6g"]
+material = SubResource("StandardMaterial3D_g1dw6")
+size = Vector3(1, 0.2, 3)
+
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
+script = ExtResource("1_oul6g")
+
+[node name="PrefabTemp" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_sh265")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_4flbx")
+
+[node name="Temp" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.1768691, 0, 1.3017182, -0.38478374)
+mesh = SubResource("BoxMesh_oul6g")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="crosshair" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+pivot_offset = Vector2(261, 255.99951)
+size_flags_horizontal = 4
+texture = ExtResource("3_g1dw6")
+script = ExtResource("4_yw30f")
