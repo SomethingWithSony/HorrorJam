@@ -42,7 +42,7 @@ func _update_label_position():
 		screen_pos.y -= 40
 		label.position = screen_pos
 
-func _on_mouse_entered():
+func highlight():
 	if (in_interactable_distance):
 		hovering = true
 		_update_label_position()
@@ -51,7 +51,7 @@ func _on_mouse_entered():
 		label.show()
 	
 
-func _on_mouse_exited():
+func remove_highlight():
 	hovering = false
 	label.hide()
 	mesh.material_overlay = null

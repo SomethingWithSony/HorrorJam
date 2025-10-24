@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://bhnk1fjsqlgg2"]
+
+[ext_resource type="Script" uid="uid://dgi01k77qmfjk" path="res://antidote/antidote.gd" id="1_xlkd1"]
+[ext_resource type="Material" uid="uid://dumpc2i4cpbl1" path="res://materials/outline.tres" id="2_vyj5s"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vyj5s"]
+albedo_color = Color(0.33408043, 0.60556644, 0.2553263, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s4ggg"]
+material = SubResource("StandardMaterial3D_vyj5s")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vyj5s"]
+
+[node name="Antidote" type="StaticBody3D" node_paths=PackedStringArray("mesh")]
+script = ExtResource("1_xlkd1")
+mesh = NodePath("MeshInstance3D")
+outline_material = ExtResource("2_vyj5s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_s4ggg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_vyj5s")
+
+[connection signal="interacted" from="." to="." method="_on_interacted"]
